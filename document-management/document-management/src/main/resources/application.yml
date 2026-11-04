@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: document-management
+
+  datasource:
+    # Oracle SID format (host:port:SID). Set DB_HOST / DB_PORT / DB_SID to match your server.
+    url: jdbc:oracle:thin:@${DB_HOST:localhost}:${DB_PORT:1521}:${DB_SID:XE}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate   # tables are created by database/*.sql, never by Hibernate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+app:
+  storage:
+    upload-dir: ${UPLOAD_DIR:uploads}
+    max-file-size-bytes: 5242880   # keep in sync with spring.servlet.multipart.max-file-size
+  verification:
+    # Defaults to the built-in mock provider (MockVerificationController). Point at the real provider when available.
+    base-url: ${VERIFICATION_BASE_URL:http://localhost:8080/mock/third-party}
+    timeout: 3s
+
+server:
+  port: 8080
